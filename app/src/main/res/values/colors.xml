@@ -3,4 +3,16 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    //board items text color
+    <color name="text_color_one">#461C83</color>
+    <color name="text_color_two">#D4790D</color>
+    <color name="text_color_three">#001579</color>
+    <color name="text_color_four">#C90808</color>
+
+    //board text colors
+    <color name="board_add">#C4C4C4</color>
+    <color name="subboard_board_title">#001579</color>
+    <color name="subboard_title">#1C3AA9</color>
+    <color name="button_text_color">#FFFFFF</color>
 </resources>

@@ -11,7 +11,8 @@ data class BoardModel(
     var id: Long = 0,
     var title: String?,
     var imageUri: String? = "",
-    var subBoardList: ArrayList<SubBoard> = ArrayList()
+    var subBoardList: ArrayList<SubBoard> = ArrayList(),
+    var color: Int
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -20,7 +21,8 @@ data class BoardModel(
         parcel.readString(),
         arrayListOf<SubBoard>().apply {
             parcel.readList(this as List<*>, SubBoard::class.java.classLoader)
-        }
+        },
+        parcel.readInt()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
@@ -28,6 +30,7 @@ data class BoardModel(
         dest.writeString(title)
         dest.writeString(imageUri)
         dest.writeList(subBoardList as List<*>)
+        dest.writeInt(color)
     }
 
     override fun describeContents(): Int {

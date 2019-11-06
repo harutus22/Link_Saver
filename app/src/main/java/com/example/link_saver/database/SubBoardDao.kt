@@ -15,6 +15,6 @@ interface SubBoardDao {
     @Update
     fun update(subBoard: SubBoard)
 
-    @Delete
-    fun delete(subBoard: SubBoard)
+    @Query("DELETE FROM subboard WHERE id = :subBoardId")
+    fun delete(subBoardId: Long)
 }

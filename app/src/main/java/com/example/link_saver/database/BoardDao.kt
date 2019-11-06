@@ -15,6 +15,6 @@ interface BoardDao {
     @Update
     fun update(boardModel: BoardModel)
 
-    @Delete
-    fun delete(boardModel: BoardModel)
+    @Query("DELETE FROM BoardModel WHERE id = :boardId")
+    fun delete(boardId: Long)
 }

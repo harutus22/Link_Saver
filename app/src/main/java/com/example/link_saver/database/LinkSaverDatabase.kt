@@ -15,7 +15,7 @@ import com.example.link_saver.utils.DataConverter
 abstract class LinkSaverDatabase: RoomDatabase() {
     abstract fun linkDao(): LinkDao
     abstract fun subBoardDao(): SubBoardDao
-    abstract fun BoardDao(): BoardDao
+    abstract fun boardDao(): BoardDao
 
     companion object{
         @Volatile private var instance: LinkSaverDatabase? = null

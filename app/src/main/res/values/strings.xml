@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Link_Saver</string>
     <string name="new_board">New Board</string>
+    <string name="title">Title</string>
+    <string name="add_category_title">add category title</string>
+    <string name="view">View</string>
 </resources>

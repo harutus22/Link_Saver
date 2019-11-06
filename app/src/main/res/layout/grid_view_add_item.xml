@@ -30,7 +30,7 @@
         <TextView
             android:id="@+id/boardTitle"
             android:hint="@string/new_board"
-            android:textColorHint="#C4C4C4"
+            android:textColorHint="@color/board_add"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

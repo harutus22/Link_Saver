@@ -6,10 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
     >
 
-    <include layout="@layout/search_view"/>
+    <include layout="@layout/search_view"
+        android:id="@+id/mainSearchView"
+        android:visibility="invisible"/>
+
+    <include layout="@layout/grid_view_add_item"
+        android:id="@+id/lonelyAddButton"
+        android:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -18,7 +24,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/grid_view_item"
+        android:visibility="invisible"
         />
-
-
 </LinearLayout>
