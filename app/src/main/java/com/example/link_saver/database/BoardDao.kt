@@ -6,7 +6,7 @@ import com.example.link_saver.model.BoardModel
 
 @Dao
 interface BoardDao {
-    @Query("SELECT * FROM Boardmodel ORDER BY id")
+    @Query("SELECT * FROM BoardModel ORDER BY id")
     fun getAllBoards(): LiveData<List<BoardModel>>
 
     @Insert

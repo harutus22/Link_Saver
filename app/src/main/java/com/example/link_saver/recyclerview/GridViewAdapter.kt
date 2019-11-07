@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
+import com.example.link_saver.utils.setColor
 import java.util.*
 import kotlin.collections.ArrayList
 
 private const val ADD_BUTTON_VIEW = -42
 
-class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickListener):
+class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickListener, private val onBoardItemMenuClickListener: OnBoardItemMenuClickListener):
     RecyclerView.Adapter<GridViewAdapter.GridViewHolder>() {
-    private var itemsCopy: MutableList<BoardModel> = mutableListOf()
+    private var itemsCopy: ArrayList<BoardModel> = ArrayList()
     private val boardItems: ArrayList<BoardModel> = ArrayList()
     init {
         itemsCopy.addAll(boardItems)
@@ -43,22 +44,22 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         val boardModel = boardItems[position]
         if (position == 0) {
             holder.itemView.setOnClickListener {
-                onBoardItemClickListener.onBoardAddClicked()
+                onBoardItemMenuClickListener.onBoardAddClicked()
             }
         } else if (position != RecyclerView.NO_POSITION) {
             holder.boardTitle.text = boardModel.title
-            holder.boardTitle.setTextColor(holder.itemView.context.resources.getColor(getTextColor(boardModel.color)))
+            holder.boardTitle.setTextColor(holder.itemView.setColor(boardModel.color))
             Glide.with(holder.itemView).load(boardModel.imageUri).circleCrop().into(holder.boardImage)
             holder.itemView.setOnClickListener {
                 onBoardItemClickListener.onBoardItemClicked(boardModel)
             }
             holder.boardMenuButton?.setOnClickListener {
-                onBoardItemClickListener.onBoardItemMenuClicked(boardModel)
+                onBoardItemMenuClickListener.onBoardItemMenuClicked(boardModel)
             }
         }
     }
 
-    inner class GridViewHolder(itemView: View):
+    class GridViewHolder(itemView: View):
         RecyclerView.ViewHolder(itemView){
         val boardImage: ImageView = itemView.findViewById(R.id.boardImage)
         val boardTitle: TextView = itemView.findViewById(R.id.boardTitle)
@@ -84,7 +85,7 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         notifyDataSetChanged()
     }
 
-    fun submitList(list: MutableList<BoardModel>) {
+    fun submitList(list: List<BoardModel>) {
         boardItems.clear()
         itemsCopy.clear()
         boardItems.add(0, BoardModel(title = "addButton", color = 0))
@@ -101,19 +102,13 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
             if (color_count > 3) color_count = 0
         }
     }
-
-    private fun getTextColor(inputColor: Int): Int{
-        return when(inputColor){
-            0 -> R.color.text_color_one
-            1 -> R.color.text_color_two
-            2 -> R.color.text_color_three
-            else -> R.color.text_color_four
-        }
-    }
 }
 
 interface OnBoardItemClickListener{
     fun onBoardItemClicked(boardModel: BoardModel)
-    fun onBoardAddClicked()
+}
+
+interface OnBoardItemMenuClickListener{
     fun onBoardItemMenuClicked(boardModel: BoardModel)
+    fun onBoardAddClicked()
 }

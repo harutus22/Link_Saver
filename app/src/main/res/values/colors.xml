@@ -12,7 +12,7 @@
 
     //board text colors
     <color name="board_add">#C4C4C4</color>
-    <color name="subboard_board_title">#001579</color>
-    <color name="subboard_title">#1C3AA9</color>
+    <color name="subBoard_board_title">#001579</color>
+    <color name="subBoard_title">#1C3AA9</color>
     <color name="button_text_color">#FFFFFF</color>
 </resources>

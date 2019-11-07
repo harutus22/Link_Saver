@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,26 +47,43 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/categoryDescription"
+        <LinearLayout
+            android:id="@+id/addSubCategoriesAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="4dp"
-            android:text="@string/add_category_title"
-            android:textColor="@color/board_add"/>
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_subcategories_about"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_marginEnd="5dp"
+                />
+
+            <TextView
+                android:id="@+id/hintAboutBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/subBoard_board_title"
+                />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/addBoardDone"
+            android:id="@+id/addSubcategoryDoneButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/done"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/ic_big_button"
-            android:text="@string/done"
-            android:layout_marginTop="4dp"
             android:textColor="@color/button_text_color"
             android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-            />
+            android:layout_marginTop="35dp" />
 
     </LinearLayout>
 

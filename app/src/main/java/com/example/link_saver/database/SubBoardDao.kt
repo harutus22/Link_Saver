@@ -6,7 +6,7 @@ import com.example.link_saver.model.SubBoard
 
 @Dao
 interface SubBoardDao {
-    @Query("SELECT * FROM subboard WHERE boardId = :foreignId")
+    @Query("SELECT * FROM SubBoard WHERE boardId = :foreignId")
     fun getAllSubBoards(foreignId: Long): LiveData<List<SubBoard>>
 
     @Insert
@@ -15,6 +15,6 @@ interface SubBoardDao {
     @Update
     fun update(subBoard: SubBoard)
 
-    @Query("DELETE FROM subboard WHERE id = :subBoardId")
+    @Query("DELETE FROM SubBoard WHERE id = :subBoardId")
     fun delete(subBoardId: Long)
 }

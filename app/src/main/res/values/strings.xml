@@ -4,4 +4,8 @@
     <string name="title">Title</string>
     <string name="add_category_title">add category title</string>
     <string name="view">View</string>
+    <string name="link_hint">Link</string>
+    <string name="done">Done</string>
+    <string name="past_link_about">past link about</string>
+    <string name="add_subcategories_about">add subcategories about</string>
 </resources>

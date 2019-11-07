@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/ic_rectangle_background"
     android:elevation="8dp">
 
@@ -18,23 +19,80 @@
 
             <TextView
                 android:id="@+id/subBoardTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_weight="1"
-                android:textColor="@color/subboard_title"
+                android:textColor="@color/subBoard_title"
                 android:textSize="18sp" />
 
             <ImageButton
                 android:id="@+id/subBoardItemMenu"
                 android:layout_width="24dp"
                 android:layout_height="12dp"
-                android:layout_gravity="center_vertical|"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_menu_dots" />
 
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/addLinkToSubBoard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_link_item_rectangle"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:elevation="4dp"
+            android:hint="@string/title"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/pastLinkHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/past_link_about"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_marginEnd="5dp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/hintAboutSubBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/subBoard_board_title"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
+        <!-- TODO if would not be able to change buttons background shadow use image view and text picture over -->
+
+        <Button
+            android:id="@+id/linkAddDoneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_big_button"
+            android:textColor="@color/button_text_color"
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/linkRecyclerView"
@@ -43,7 +101,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:padding="16dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="14dp"
+            tools:listitem="@layout/link_item"/>
 
     </LinearLayout>
 
