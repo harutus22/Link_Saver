@@ -38,7 +38,7 @@
                 android:layout_marginBottom="16dp"/>
 
             <TextView
-                android:id="@+id/subboardBoardTitle"
+                android:id="@+id/subBoardBoardTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@id/subBoardBoardImage"
@@ -62,8 +62,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include layout="@layout/add_board"
-            android:id="@+id/addSubBoardTitle"
+        <include layout="@layout/add_subboard"
+            android:id="@+id/addSubBoard"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_marginTop="16dp"
@@ -74,6 +74,7 @@
             android:id="@+id/subBoardRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
             tools:listitem="@layout/subboard_item"/>
 
     </LinearLayout>

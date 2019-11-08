@@ -12,15 +12,15 @@ class DataConverter : Serializable {
     fun fromSubBoardList(subBoard: ArrayList<SubBoard>?): String? {
         if (subBoard == null) return null
         val gson = Gson()
-        val type = object : TypeToken<SubBoard>() {}.type
+        val type = object : TypeToken<ArrayList<SubBoard>>() {}.type
         return gson.toJson(subBoard, type)
     }
 
     @TypeConverter
-    fun toSubBoard(value: String?): ArrayList<SubBoard>? {
+    fun toSubBoardList(value: String?): ArrayList<SubBoard>? {
         if (value == null) return value
         val gson = Gson()
-        val type = object : TypeToken<SubBoard>() {}.type
+        val type = object : TypeToken<ArrayList<SubBoard>>() {}.type
         return gson.fromJson(value, type)
     }
 
@@ -28,7 +28,7 @@ class DataConverter : Serializable {
     fun fromLinkModelArrayList(board: ArrayList<LinkModel>?): String?{
         if (board == null) return null
         val gson = Gson()
-        val type = object : TypeToken<LinkModel>(){}.type
+        val type = object : TypeToken<ArrayList<LinkModel>>(){}.type
         return gson.toJson(board, type)
     }
 
@@ -36,7 +36,7 @@ class DataConverter : Serializable {
     fun toLinkModelArrayList(value: String?): ArrayList<LinkModel>?{
         if (value == null) return value
         val gson = Gson()
-        val type = object : TypeToken<LinkModel>(){}.type
+        val type = object : TypeToken<ArrayList<LinkModel>>(){}.type
         return gson.fromJson(value, type)
     }
 }

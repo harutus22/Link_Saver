@@ -9,29 +9,51 @@
     android:gravity="center_horizontal"
     >
 
-    <include layout="@layout/search_view"
-        android:id="@+id/mainSearchView"
-        android:visibility="gone"/>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include layout="@layout/search_view"
+            android:id="@+id/mainSearchView"
+            android:visibility="visible"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="16dp"
+            app:spanCount="2"
+            tools:listitem="@layout/grid_view_item"
+            android:visibility="visible"
+            />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
 
     <include layout="@layout/grid_view_add_item"
-        android:id="@+id/lonelyAddButton"
-        android:visibility="gone"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/grid_view_item"
+        android:layout_width="wrap_content"
+        android:id="@+id/lonelyAddButton"
+        android:layout_marginTop="84dp"
         android:visibility="gone"
-        />
+        android:layout_gravity="center_horizontal"/>
 
     <include
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         layout="@layout/add_board"
         android:id="@+id/addNewBoardView"
-        android:visibility="visible"
-        android:layout_marginTop="100dp"/>
+        android:visibility="gone"
+        android:layout_marginTop="100dp"
+        />
 </LinearLayout>

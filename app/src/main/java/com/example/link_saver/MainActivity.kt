@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.link_saver.fragments.MainFragment
+import com.example.link_saver.fragments.SubBoardFragment
 import com.example.link_saver.model.BoardModel
 import com.example.link_saver.recyclerview.GridViewAdapter
 import com.example.link_saver.recyclerview.OnBoardItemClickListener
@@ -27,6 +28,11 @@ class MainActivity : AppCompatActivity(), OnBoardItemClickListener {
 
     override fun onBoardItemClicked(boardModel: BoardModel) {
         Toast.makeText(this, "On Board Item Clicked ${boardModel.imageUri}", Toast.LENGTH_LONG).show()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.addToBackStack(null)
+        val subBoardFragment = SubBoardFragment.newInstance(boardModel)
+        transaction.replace(R.id.container, subBoardFragment)
+        transaction.commit()
     }
 
     private fun starFragment(){

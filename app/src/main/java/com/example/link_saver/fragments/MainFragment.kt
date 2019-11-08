@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -24,6 +24,13 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
     private lateinit var onBoardItemClickListener: OnBoardItemClickListener
     private lateinit var mainSearchView: SearchView
     private lateinit var searchCardView: CardView
+    private lateinit var addNewBoardView: CardView
+    private lateinit var addBoardDone: Button
+    private lateinit var editTextBoardTitle: EditText
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var linearLayout: LinearLayout
+    private lateinit var lonelyAddButton: CardView
+    private lateinit var progressBar: ProgressBar
 
     private val viewModel: BoardViewModel by lazy {
         ViewModelProviders.of(this).get(BoardViewModel::class.java)
@@ -34,10 +41,17 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
         fun newInstance(onBoardItemClickListener: OnBoardItemClickListener) = MainFragment().apply {
             this.onBoardItemClickListener = onBoardItemClickListener
         }
+
+        private var color_count: Int = 0
+        private fun addCount(){
+            color_count += 1
+            if (color_count > 3) color_count = 0
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        boardListAdapter = GridViewAdapter(onBoardItemClickListener, this)
         observeViewModel()
     }
 
@@ -53,47 +67,38 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
     }
 
     private fun setRecyclerView(view: View){
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        val boardList = ArrayList<BoardModel>()
-//        boardList.add((BoardModel(title = "Weeding", imageUri = "dasdasdasda", color = 0)))
-//        boardList.add(BoardModel(title = "Sport", imageUri = "sparta", color = 1))
-//        boardList.add(BoardModel(title = "French", imageUri = "this is it", color = 2))
-//        boardList.add(BoardModel(title = "German", imageUri = "Zig Hi!!!!!", color = 3))
-//        boardList.add(BoardModel(title = "Italian", imageUri = "Mescuzi un pizza", color = 0))
-//        boardList.add(BoardModel(title = "Russian", imageUri = "Ra ra rasputin", color = 1))
-//        boardList.add(BoardModel(title = "Chinese", imageUri = "Cheese", color = 2))
-//        boardList.add(BoardModel(title = "Japan", imageUri = "Arigato arimasen", color = 3))
-//        boardList.add(BoardModel(title = "Irish", imageUri = "What do we do with the drunken sailor", color = 0))
-
-        //TODO change in future to check with database and simplify the code
-        val lonelyAddButton: CardView = view.findViewById(R.id.lonelyAddButton)
-        if (boardList.isEmpty()){
-            recyclerView.visibility = View.INVISIBLE
-            searchCardView.visibility = View.INVISIBLE
-            lonelyAddButton.setOnClickListener {
-                addButtonClicked()
-                //TODO add method to add first Board Item to change the view type
-                recyclerView.visibility = View.VISIBLE
-                searchCardView.visibility = View.VISIBLE
-                lonelyAddButton.visibility = View.GONE
-            }
-        } else {
-            recyclerView.visibility = View.VISIBLE
-            searchCardView.visibility = View.VISIBLE
-            lonelyAddButton.visibility = View.GONE
-        }
-
-
+        progressBar = view.findViewById(R.id.progressBar)
+        recyclerView = view.findViewById(R.id.recyclerView)
+        lonelyAddButton = view.findViewById(R.id.lonelyAddButton)
         val layoutManager = GridLayoutManager(this.context, 2)
         recyclerView.layoutManager = layoutManager
-        boardListAdapter = GridViewAdapter(onBoardItemClickListener, this)
-        boardListAdapter.submitList(boardList)
         recyclerView.adapter = boardListAdapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (boardListAdapter.isAdapterEmpty()){
+//            linearLayout.visibility = View.GONE
+//            lonelyAddButton.visibility = View.VISIBLE
+            lonelyAddButton.setOnClickListener {
+                lonelyAddButton.visibility = View.GONE
+                //TODO add method to add first Board Item to change the view type
+                addButtonClicked()
+            }
+        } else {
+            lonelyAddButton.visibility = View.GONE
+            linearLayout.visibility = View.VISIBLE
+        }
     }
 
     private fun searchItem(view: View){
         searchCardView = view.findViewById(R.id.mainSearchView)
         mainSearchView = view.findViewById(R.id.searchView)
+        addNewBoardView = view.findViewById(R.id.addNewBoardView)
+        addBoardDone = view.findViewById(R.id.addBoardDone)
+        editTextBoardTitle = view.findViewById(R.id.editTextBoardTitle)
+        linearLayout = view.findViewById(R.id.linearLayout)
+
         mainSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String): Boolean {
                 boardListAdapter.filter(query)
@@ -109,7 +114,16 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
 
     private fun observeViewModel(){
         viewModel.getAllBoards().observe(this, Observer {
+            progressBar.visibility = View.VISIBLE
             boardListAdapter.submitList(it)
+            if (it.isNotEmpty()) {
+                color_count = it.last().color
+                linearLayout.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            } else {
+                lonelyAddButton.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
         })
     }
 
@@ -123,5 +137,22 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
 
     private fun addButtonClicked(){
         Toast.makeText(this.context, "On Board add Clicked", Toast.LENGTH_LONG).show()
+        addNewBoardView.visibility = View.VISIBLE
+        linearLayout.visibility = View.GONE
+        //TODO when make a search and add something, after complete of add in search view text remain but search is not made, make to clear text in search view
+
+        addBoardDone.setOnClickListener {
+            if (editTextBoardTitle.text.isEmpty()){
+                Toast.makeText(this.context, "Must enter the title", Toast.LENGTH_LONG).show()
+            } else {
+                addNewBoardView.visibility = View.GONE
+                val text = editTextBoardTitle.text.toString()
+                editTextBoardTitle.text.clear()
+                addCount()
+                val board = BoardModel(title = text, imageUri = "",color = color_count)
+                viewModel.addBoard(board)
+                linearLayout.visibility = View.VISIBLE
+            }
+        }
     }
 }

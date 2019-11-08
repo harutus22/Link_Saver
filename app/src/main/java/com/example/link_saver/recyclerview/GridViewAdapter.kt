@@ -85,6 +85,10 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         notifyDataSetChanged()
     }
 
+    fun isAdapterEmpty(): Boolean{
+        return boardItems.size == 1 || boardItems.size == 0
+    }
+
     fun submitList(list: List<BoardModel>) {
         boardItems.clear()
         itemsCopy.clear()
@@ -92,15 +96,6 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         itemsCopy.addAll(list)
         boardItems.addAll(list)
         notifyDataSetChanged()
-    }
-
-    //TODO take this to the place where BoardModel will be created
-    companion object {
-        private var color_count: Int = 0
-        private fun addCount(){
-            color_count += 1
-            if (color_count > 3) color_count = 0
-        }
     }
 }
 
