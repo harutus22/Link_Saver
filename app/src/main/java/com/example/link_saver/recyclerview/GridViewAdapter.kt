@@ -3,10 +3,9 @@ package com.example.link_saver.recyclerview
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Delete
 import com.bumptech.glide.Glide
 import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
@@ -16,8 +15,20 @@ import kotlin.collections.ArrayList
 
 private const val ADD_BUTTON_VIEW = -42
 
-class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickListener, private val onBoardItemMenuClickListener: OnBoardItemMenuClickListener):
-    RecyclerView.Adapter<GridViewAdapter.GridViewHolder>() {
+class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickListener,
+                      private val onBoardItemMenuClickListener: OnBoardItemMenuClickListener):
+    RecyclerView.Adapter<GridViewAdapter.GridViewHolder>(), AdapterView.OnItemSelectedListener {
+    private var board:BoardModel? = null
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("not implemented")
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val command = parent?.getItemAtPosition(position).toString()
+        onBoardItemMenuClickListener.onBoardItemMenuClicked(board!!, command)
+    }
+
     private var itemsCopy: ArrayList<BoardModel> = ArrayList()
     private val boardItems: ArrayList<BoardModel> = ArrayList()
     init {
@@ -53,9 +64,8 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
             holder.itemView.setOnClickListener {
                 onBoardItemClickListener.onBoardItemClicked(boardModel)
             }
-            holder.boardMenuButton?.setOnClickListener {
-                onBoardItemMenuClickListener.onBoardItemMenuClicked(boardModel)
-            }
+            board = boardModel
+            holder.boardMenuButton?.onItemSelectedListener = this
         }
     }
 
@@ -63,7 +73,11 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         RecyclerView.ViewHolder(itemView){
         val boardImage: ImageView = itemView.findViewById(R.id.boardImage)
         val boardTitle: TextView = itemView.findViewById(R.id.boardTitle)
-        val boardMenuButton: ImageButton? = itemView.findViewById(R.id.boardMenu)
+        val boardMenuButton: Spinner? = itemView.findViewById(R.id.boardMenu)
+        init {
+            val adapter = ArrayAdapter.createFromResource(itemView.context, R.array.board_menu, R.layout.custom_spinner)
+            boardMenuButton?.adapter = adapter
+        }
     }
 
     fun filter(text: String) {
@@ -104,6 +118,6 @@ interface OnBoardItemClickListener{
 }
 
 interface OnBoardItemMenuClickListener{
-    fun onBoardItemMenuClicked(boardModel: BoardModel)
+    fun onBoardItemMenuClicked(boardModel: BoardModel, command: String)
     fun onBoardAddClicked()
 }

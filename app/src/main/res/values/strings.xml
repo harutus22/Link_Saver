@@ -8,4 +8,17 @@
     <string name="done">Done</string>
     <string name="past_link_about">past link about</string>
     <string name="add_subcategories_about">add subcategories about</string>
+
+    <string-array name="board_menu">
+        <item>Delete</item>
+        <item>Edit</item>
+        <item>Select picture</item>
+    </string-array>
+
+    <string-array name="sub_board_menu">
+        <item>Add</item>
+        <item>Edit</item>
+        <item>Delete</item>
+        <item>Select picture</item>
+    </string-array>
 </resources>

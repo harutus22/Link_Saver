@@ -17,6 +17,9 @@ import com.example.link_saver.model.BoardModel
 import com.example.link_saver.recyclerview.GridViewAdapter
 import com.example.link_saver.recyclerview.OnBoardItemClickListener
 import com.example.link_saver.recyclerview.OnBoardItemMenuClickListener
+import com.example.link_saver.utils.DELETE_DATA
+import com.example.link_saver.utils.EDIT_DATA
+import com.example.link_saver.utils.SELECT_PICTURE_DATA
 import com.example.link_saver.viewmodel.BoardViewModel
 
 class MainFragment: Fragment(), OnBoardItemMenuClickListener {
@@ -78,16 +81,15 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
     override fun onStart() {
         super.onStart()
         if (boardListAdapter.isAdapterEmpty()){
-//            linearLayout.visibility = View.GONE
-//            lonelyAddButton.visibility = View.VISIBLE
             lonelyAddButton.setOnClickListener {
                 lonelyAddButton.visibility = View.GONE
-                //TODO add method to add first Board Item to change the view type
+
                 addButtonClicked()
             }
         } else {
             lonelyAddButton.visibility = View.GONE
             linearLayout.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
         }
     }
 
@@ -119,16 +121,21 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
             if (it.isNotEmpty()) {
                 color_count = it.last().color
                 linearLayout.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
             } else {
                 lonelyAddButton.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
             }
+            progressBar.visibility = View.GONE
         })
     }
 
-    override fun onBoardItemMenuClicked(boardModel: BoardModel) {
+    override fun onBoardItemMenuClicked(boardModel: BoardModel, command: String) {
         Toast.makeText(this.context, "On Board Item Menu Clicked ${boardModel.imageUri}", Toast.LENGTH_LONG).show()
+        when(command){
+            //TODO spinner item dont work properly
+//            EDIT_DATA ->{}
+//            DELETE_DATA -> viewModel.deleteBoard(boardModel.id)
+//            SELECT_PICTURE_DATA ->{}
+        }
     }
 
     override fun onBoardAddClicked() {
@@ -139,7 +146,6 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
         Toast.makeText(this.context, "On Board add Clicked", Toast.LENGTH_LONG).show()
         addNewBoardView.visibility = View.VISIBLE
         linearLayout.visibility = View.GONE
-        //TODO when make a search and add something, after complete of add in search view text remain but search is not made, make to clear text in search view
 
         addBoardDone.setOnClickListener {
             if (editTextBoardTitle.text.isEmpty()){
@@ -148,6 +154,7 @@ class MainFragment: Fragment(), OnBoardItemMenuClickListener {
                 addNewBoardView.visibility = View.GONE
                 val text = editTextBoardTitle.text.toString()
                 editTextBoardTitle.text.clear()
+                mainSearchView.setQuery("", false)
                 addCount()
                 val board = BoardModel(title = text, imageUri = "",color = color_count)
                 viewModel.addBoard(board)
