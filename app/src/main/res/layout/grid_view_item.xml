@@ -45,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/boardImage" />
 
-        <Spinner
+        <ImageButton
             android:id="@+id/boardMenu"
             android:layout_width="24dp"
             android:layout_height="12dp"

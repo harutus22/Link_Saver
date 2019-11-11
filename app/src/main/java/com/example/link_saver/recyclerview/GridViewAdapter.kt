@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Delete
 import com.bumptech.glide.Glide
 import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
@@ -15,31 +14,29 @@ import kotlin.collections.ArrayList
 
 private const val ADD_BUTTON_VIEW = -42
 
-class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickListener,
-                      private val onBoardItemMenuClickListener: OnBoardItemMenuClickListener):
-    RecyclerView.Adapter<GridViewAdapter.GridViewHolder>(), AdapterView.OnItemSelectedListener {
-    private var board:BoardModel? = null
+class GridViewAdapter(
+    private val onBoardItemClickListener: OnBoardItemClickListener,
+    private val onBoardItemMenuClickListener: OnBoardItemMenuClickListener
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("not implemented")
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val command = parent?.getItemAtPosition(position).toString()
-        onBoardItemMenuClickListener.onBoardItemMenuClicked(board!!, command)
-    }
+    private var board: BoardModel? = null
 
     private var itemsCopy: ArrayList<BoardModel> = ArrayList()
     private val boardItems: ArrayList<BoardModel> = ArrayList()
+
     init {
         itemsCopy.addAll(boardItems)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
-        val view: View = if (viewType == ADD_BUTTON_VIEW)
-            LayoutInflater.from(parent.context).inflate(R.layout.grid_view_add_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view: View
+        if(viewType == ADD_BUTTON_VIEW) {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.grid_view_add_item, parent, false)
+            return AddViewHolder(view)
+        }
         else
-            LayoutInflater.from(parent.context).inflate(R.layout.grid_view_item, parent, false)
+            view = LayoutInflater.from(parent.context).inflate(R.layout.grid_view_item, parent, false)
         return GridViewHolder(view)
     }
 
@@ -51,34 +48,56 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         return if (position == 0) ADD_BUTTON_VIEW else super.getItemViewType(position)
     }
 
-    override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val boardModel = boardItems[position]
         if (position == 0) {
-            holder.itemView.setOnClickListener {
+            val addHolder = holder as AddViewHolder
+            addHolder.itemView.setOnClickListener {
                 onBoardItemMenuClickListener.onBoardAddClicked()
             }
         } else if (position != RecyclerView.NO_POSITION) {
-            holder.boardTitle.text = boardModel.title
-            holder.boardTitle.setTextColor(holder.itemView.setColor(boardModel.color))
-            Glide.with(holder.itemView).load(boardModel.imageUri).circleCrop().into(holder.boardImage)
+            val gridViewHolder = holder as GridViewHolder
+            gridViewHolder.boardTitle.text = boardModel.title
+            gridViewHolder.boardTitle.setTextColor(gridViewHolder.itemView.setColor(boardModel.color))
+            Glide.with(gridViewHolder.itemView).load(boardModel.imageUri).circleCrop()
+                .into(gridViewHolder.boardImage)
             holder.itemView.setOnClickListener {
                 onBoardItemClickListener.onBoardItemClicked(boardModel)
             }
-            board = boardModel
-            holder.boardMenuButton?.onItemSelectedListener = this
+            //TODO change the size of menu item click as it is too big
+            gridViewHolder.boardMenuButton?.setOnClickListener {
+                val popupMenu = PopupMenu(it.context, it)
+                popupMenu.menuInflater.inflate(R.menu.menu_board, popupMenu.menu)
+                popupMenu.setOnMenuItemClickListener { menuItem ->
+                    board = boardItems[position]
+                    when (menuItem.itemId) {
+                        R.id.menuDeleteButton -> {
+                            onBoardItemMenuClickListener.onBoardItemMenuClicked(board!!, menuItem.toString())
+                            true
+                        }
+                        R.id.menuEditButton -> {
+                            onBoardItemMenuClickListener.onBoardItemMenuClicked(board!!, menuItem.toString())
+                            true
+                        }
+                        else -> {
+                            onBoardItemMenuClickListener.onBoardItemMenuClicked(board!!, menuItem.toString())
+                            true
+                        }
+                    }
+                }
+                popupMenu.show()
+            }
         }
     }
 
-    class GridViewHolder(itemView: View):
-        RecyclerView.ViewHolder(itemView){
+    class GridViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         val boardImage: ImageView = itemView.findViewById(R.id.boardImage)
         val boardTitle: TextView = itemView.findViewById(R.id.boardTitle)
-        val boardMenuButton: Spinner? = itemView.findViewById(R.id.boardMenu)
-        init {
-            val adapter = ArrayAdapter.createFromResource(itemView.context, R.array.board_menu, R.layout.custom_spinner)
-            boardMenuButton?.adapter = adapter
-        }
+        val boardMenuButton: ImageButton? = itemView.findViewById(R.id.boardMenu)
     }
+
+    class AddViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
 
     fun filter(text: String) {
         val locale = Locale.getDefault()
@@ -99,7 +118,7 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
         notifyDataSetChanged()
     }
 
-    fun isAdapterEmpty(): Boolean{
+    fun isAdapterEmpty(): Boolean {
         return boardItems.size == 1 || boardItems.size == 0
     }
 
@@ -113,11 +132,11 @@ class GridViewAdapter(private val onBoardItemClickListener: OnBoardItemClickList
     }
 }
 
-interface OnBoardItemClickListener{
+interface OnBoardItemClickListener {
     fun onBoardItemClicked(boardModel: BoardModel)
 }
 
-interface OnBoardItemMenuClickListener{
+interface OnBoardItemMenuClickListener {
     fun onBoardItemMenuClicked(boardModel: BoardModel, command: String)
     fun onBoardAddClicked()
 }

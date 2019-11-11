@@ -10,8 +10,8 @@
     <string name="add_subcategories_about">add subcategories about</string>
 
     <string-array name="board_menu">
-        <item>Delete</item>
         <item>Edit</item>
+        <item>Delete</item>
         <item>Select picture</item>
     </string-array>
 

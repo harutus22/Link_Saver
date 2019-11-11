@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
 
@@ -33,6 +34,7 @@ class SubBoardFragment: Fragment() {
             this.boardModel = boardModel
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -40,6 +42,8 @@ class SubBoardFragment: Fragment() {
     override fun onStart() {
         super.onStart()
         subBoardTitle.text = boardModel.title
+        Glide.with(this).load(boardModel.imageUri).circleCrop()
+            .into(subBoardImage)
 
     }
 
