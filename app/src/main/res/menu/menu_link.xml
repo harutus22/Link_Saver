@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/menuAddButton"
+        android:title="@string/add_new"/>
+
+    <item
         android:id="@+id/menuEditButton"
         android:title="@string/edit"/>
 
     <item
         android:id="@+id/menuDeleteButton"
         android:title="@string/delete"/>
-
-    <item
-        android:id="@+id/menuSelectPicture"
-        android:title="@string/select_picture"/>
 </menu>

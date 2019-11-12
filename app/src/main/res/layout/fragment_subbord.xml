@@ -12,6 +12,12 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
         <include layout="@layout/search_view"
             android:id="@+id/subBoardSearchView"/>
         
@@ -65,9 +71,11 @@
         <include layout="@layout/add_subboard"
             android:id="@+id/addSubBoard"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView

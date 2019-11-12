@@ -1,9 +1,10 @@
 package com.example.link_saver.recyclerview
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Build
+import android.view.*
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.annotation.StyleRes
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.link_saver.R
@@ -25,9 +26,6 @@ class GridViewAdapter(
     private var itemsCopy: ArrayList<BoardModel> = ArrayList()
     private val boardItems: ArrayList<BoardModel> = ArrayList()
 
-    init {
-        itemsCopy.addAll(boardItems)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
@@ -48,6 +46,7 @@ class GridViewAdapter(
         return if (position == 0) ADD_BUTTON_VIEW else super.getItemViewType(position)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val boardModel = boardItems[position]
         if (position == 0) {
@@ -61,9 +60,10 @@ class GridViewAdapter(
             gridViewHolder.boardTitle.setTextColor(gridViewHolder.itemView.setColor(boardModel.color))
             Glide.with(gridViewHolder.itemView).load(boardModel.imageUri).circleCrop()
                 .into(gridViewHolder.boardImage)
-            holder.itemView.setOnClickListener {
+            gridViewHolder.itemView.setOnClickListener {
                 onBoardItemClickListener.onBoardItemClicked(boardModel)
             }
+
             //TODO change the size of menu item click as it is too big
             gridViewHolder.boardMenuButton?.setOnClickListener {
                 val popupMenu = PopupMenu(it.context, it)

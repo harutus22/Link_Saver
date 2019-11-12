@@ -1,34 +1,78 @@
 package com.example.link_saver.fragments
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
+import com.example.link_saver.model.LinkModel
+import com.example.link_saver.model.SubBoard
+import com.example.link_saver.recyclerview.OnLinkButtonClickListener
+import com.example.link_saver.recyclerview.OnSubBoardItemClickListener
+import com.example.link_saver.recyclerview.SubBoardAdapter
+import com.example.link_saver.utils.GET_PICTURE_RESULT
+import com.example.link_saver.viewmodel.BoardViewModel
 
-class SubBoardFragment: Fragment() {
+class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonClickListener {
+    override fun onDeleteClick(subBoardId: Long) {
+        viewModel.deleteSubBoard(subBoardId)
+    }
+
+    override fun onEditClick(subBoard: SubBoard) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onDoneClick(uri: String, subBoard: SubBoard) {
+        subBoard.linkModelList.add(LinkModel(id = 0, subBoardId = subBoard.id, uri = uri))
+        viewModel.updateSubBoard(subBoard)
+    }
+
+    override fun onButtonClicked(uri: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.setPackage("com.android.chrome")
+        try {
+            startActivity(intent)
+        } catch (ex: ActivityNotFoundException){
+            intent.setPackage(null)
+            startActivity(Intent.createChooser(intent, "Select Browser"));
+        }
+    }
+
     private lateinit var boardModel: BoardModel
     private lateinit var searchView: SearchView
     private lateinit var subBoardImage: ImageView
     private lateinit var subBoardTitle: TextView
-    private lateinit var subBoardMenu: ImageView
+    private lateinit var subBoardMenu: ImageButton
     private lateinit var addNewSubBoard: CardView
     private lateinit var addNewSubBoardTitle: EditText
     private lateinit var addNewSubBoardHint: TextView
     private lateinit var addNewSubBoardDone: Button
     private lateinit var subBoardRecyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
-    companion object{
+    private val subBoardAdapter: SubBoardAdapter = SubBoardAdapter(this, this)
+    private val viewModel: BoardViewModel by lazy {
+        ViewModelProviders.of(this).get(BoardViewModel::class.java)
+    }
+
+    companion object {
         @JvmStatic
         fun newInstance(boardModel: BoardModel) = SubBoardFragment().apply {
             this.boardModel = boardModel
@@ -37,14 +81,24 @@ class SubBoardFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.getAllSubBoards(boardModel.id).observe(this, Observer {
+            subBoardAdapter.submitList(it)
+            progressBar.visibility = View.GONE
+            if (it.isEmpty()) {
+                addNewSubBoard.visibility = View.VISIBLE
+                addNewSubBoardHint.text = boardModel.title
+            }
+        })
     }
 
     override fun onStart() {
         super.onStart()
         subBoardTitle.text = boardModel.title
-        Glide.with(this).load(boardModel.imageUri).circleCrop()
-            .into(subBoardImage)
-
+        selectPicture(boardModel.imageUri!!)
+        searchItem()
+        setRecyclerView()
+        addSubCategory()
+        addClickListener()
     }
 
     override fun onCreateView(
@@ -57,7 +111,101 @@ class SubBoardFragment: Fragment() {
         return view
     }
 
-    private fun setViews(view: View){
+    private fun setRecyclerView() {
+        subBoardRecyclerView.apply {
+            layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
+            adapter = subBoardAdapter
+        }
+    }
+
+    private fun addSubCategory() {
+        addNewSubBoardTitle.addTextChangedListener {
+            if (addNewSubBoardTitle.text.isNotEmpty()) {
+                addNewSubBoardDone.visibility = View.VISIBLE
+                val title = addNewSubBoardTitle.text.toString()
+                addNewSubBoardDone.setOnClickListener {
+                    viewModel.addSubBoard(SubBoard(boardId = boardModel.id, title = title))
+                    addNewSubBoard.visibility = View.GONE
+                    addNewSubBoardDone.visibility = View.GONE
+                }
+            } else {
+                addNewSubBoardDone.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun searchItem() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                subBoardAdapter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                subBoardAdapter.filter(newText)
+                return true
+            }
+        })
+    }
+
+    private fun addClickListener(){
+        subBoardMenu.setOnClickListener {
+            val popupMenu = PopupMenu(it.context, it)
+            popupMenu.menuInflater.inflate(R.menu.menu_sub_board, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.menuAddButton -> {
+                        addNewSubBoardTitle.text.clear()
+                        addNewSubBoard.visibility = View.VISIBLE
+                        true
+                    }
+                    R.id.menuDeleteButton -> {
+                        deleteBoard()
+                        true
+                    }
+                    R.id.menuEditButton -> {
+                        //TODO add edit functionality to change board model title
+                        true
+                    }
+                    else -> {
+                        getGalleryPicture()
+                        true
+                    }
+                }
+            }
+            popupMenu.show()
+        }
+    }
+
+    private fun deleteBoard(){
+        viewModel.deleteBoard(boardModel.id)
+        fragmentManager?.popBackStack()
+    }
+
+    private fun selectPicture(uri: String){
+        Glide.with(this).load(uri).circleCrop()
+            .into(subBoardImage)
+    }
+
+    private fun getGalleryPicture(){
+        val getPictureIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        startActivityForResult(getPictureIntent, GET_PICTURE_RESULT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GET_PICTURE_RESULT && resultCode == Activity.RESULT_OK && data != null) {
+            val uri = data.data.toString()
+            boardModel.imageUri = uri
+            viewModel.updateBoard(boardModel)
+            selectPicture(uri)
+        }
+    }
+
+    private fun setViews(view: View) {
         searchView = view.findViewById(R.id.searchView)
         subBoardImage = view.findViewById(R.id.subBoardBoardImage)
         subBoardTitle = view.findViewById(R.id.subBoardBoardTitle)
@@ -67,5 +215,6 @@ class SubBoardFragment: Fragment() {
         addNewSubBoardHint = view.findViewById(R.id.hintAboutSubBoard)
         addNewSubBoardDone = view.findViewById(R.id.addSubcategoryDoneButton)
         subBoardRecyclerView = view.findViewById(R.id.subBoardRecyclerView)
+        progressBar = view.findViewById(R.id.progressBar)
     }
 }

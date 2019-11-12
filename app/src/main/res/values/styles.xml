@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -8,8 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:listPreferredItemHeightSmall">35dp</item>
-        <item name="android:listPreferredItemPaddingLeft">5dp</item>
-        <item name="android:listPreferredItemPaddingRight">5dp</item>
+        <item name="android:listPreferredItemPaddingLeft">0dp</item>
+        <item name="android:listPreferredItemPaddingRight">0dp</item>
+
+        <item name="textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
+        <item name="android:popupWindowStyle">@layout/link_item</item>
 
     </style>
+
+    <style name="myPopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="myPopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

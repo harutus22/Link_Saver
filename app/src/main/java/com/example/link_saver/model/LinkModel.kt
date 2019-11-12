@@ -2,15 +2,8 @@ package com.example.link_saver.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.*
 
-@Entity(foreignKeys = [ForeignKey(entity = SubBoard::class,
-    parentColumns = ["id"],
-    childColumns = ["subBoardId"],
-    onDelete = ForeignKey.CASCADE)],
-    indices = [Index("subBoardId")])
 data class LinkModel(
-    @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     var subBoardId: Long,
     var uri: String?): Parcelable {

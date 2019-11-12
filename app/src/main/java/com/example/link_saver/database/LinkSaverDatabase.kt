@@ -6,14 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.link_saver.model.BoardModel
-import com.example.link_saver.model.LinkModel
 import com.example.link_saver.model.SubBoard
 import com.example.link_saver.utils.DataConverter
 
-@Database(entities = [LinkModel::class, SubBoard::class, BoardModel::class], version = 1)
+@Database(entities = [SubBoard::class, BoardModel::class], version = 2)
 @TypeConverters(DataConverter::class)
 abstract class LinkSaverDatabase: RoomDatabase() {
-    abstract fun linkDao(): LinkDao
     abstract fun subBoardDao(): SubBoardDao
     abstract fun boardDao(): BoardDao
 
