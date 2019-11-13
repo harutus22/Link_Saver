@@ -1,4 +1,4 @@
-package com.example.link_saver.fragments
+package com.example.link_saver.ui
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,9 +17,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
-import com.example.link_saver.recyclerview.GridViewAdapter
-import com.example.link_saver.recyclerview.OnBoardItemClickListener
-import com.example.link_saver.recyclerview.OnBoardItemMenuClickListener
+import com.example.link_saver.adapters.GridViewAdapter
+import com.example.link_saver.adapters.OnBoardItemClickListener
+import com.example.link_saver.adapters.OnBoardItemMenuClickListener
 import com.example.link_saver.utils.*
 import com.example.link_saver.viewmodel.BoardViewModel
 
@@ -143,10 +144,13 @@ class MainFragment : Fragment(), OnBoardItemMenuClickListener {
     }
 
     private fun addBoardDoneClick(boardModel: BoardModel? = null, command: String = ADD_DATA) {
-        addBoardDone.setOnClickListener {
+        editTextBoardTitle.addTextChangedListener {
             if (editTextBoardTitle.text.isEmpty()) {
-                Toast.makeText(this.context, "Must enter the title", Toast.LENGTH_LONG).show()
+                addBoardDone.visibility = View.GONE
             } else {
+                addBoardDone.visibility = View.VISIBLE
+            }
+            addBoardDone.setOnClickListener {
                 val text = editTextBoardTitle.text.toString()
                 editTextBoardTitle.text.clear()
                 mainSearchView.setQuery("", false)

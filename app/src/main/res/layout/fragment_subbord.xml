@@ -16,7 +16,8 @@
             android:id="@+id/progressBar"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="visible" />
 
         <include layout="@layout/search_view"
             android:id="@+id/subBoardSearchView"/>
@@ -27,10 +28,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            android:elevation="8dp"
-            android:background="@drawable/ic_add_edit_text_rectangle"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:elevation="8dp">
 
             <ImageView
                 android:id="@+id/subBoardBoardImage"

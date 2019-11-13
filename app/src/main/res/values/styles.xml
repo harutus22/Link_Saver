@@ -13,7 +13,7 @@
 
         <item name="textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
-        <item name="android:popupWindowStyle">@layout/link_item</item>
+        <item name="android:textAppearanceSmallPopupMenu">@android:style/TextAppearance.DeviceDefault.Small</item>
 
     </style>
 

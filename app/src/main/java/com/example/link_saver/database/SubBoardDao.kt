@@ -6,7 +6,7 @@ import com.example.link_saver.model.SubBoard
 
 @Dao
 interface SubBoardDao {
-    @Query("SELECT * FROM SubBoard WHERE boardId = :foreignId")
+    @Query("SELECT * FROM SubBoard WHERE boardId = :foreignId ORDER BY id DESC")
     fun getAllSubBoards(foreignId: Long): LiveData<List<SubBoard>>
 
     @Insert

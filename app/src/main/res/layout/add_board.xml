@@ -68,6 +68,7 @@
             android:layout_marginTop="4dp"
             android:textColor="@color/button_text_color"
             android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+            android:visibility="gone"
             />
 
     </LinearLayout>

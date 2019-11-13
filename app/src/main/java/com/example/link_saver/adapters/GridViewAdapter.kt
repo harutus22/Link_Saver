@@ -1,10 +1,9 @@
-package com.example.link_saver.recyclerview
+package com.example.link_saver.adapters
 
 import android.os.Build
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.annotation.StyleRes
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.link_saver.R

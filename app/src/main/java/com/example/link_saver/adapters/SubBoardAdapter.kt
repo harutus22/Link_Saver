@@ -1,18 +1,18 @@
-package com.example.link_saver.recyclerview
+package com.example.link_saver.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.link_saver.R
-import com.example.link_saver.model.BoardModel
+import com.example.link_saver.model.LinkModel
 import com.example.link_saver.model.SubBoard
+import com.example.link_saver.utils.WRONG_LINK_TYPE
 import com.example.link_saver.utils.checkUrl
-import com.example.link_saver.viewmodel.BoardViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -20,7 +20,12 @@ class SubBoardAdapter(
     private val onSubBoardItemClickListener: OnSubBoardItemClickListener,
     private val onLinkButtonClickListener: OnLinkButtonClickListener
 ) :
-    RecyclerView.Adapter<SubBoardAdapter.SubBoardViewHolder>() {
+    RecyclerView.Adapter<SubBoardAdapter.SubBoardViewHolder>(), OnLinkDeleteItems {
+
+    override fun onDelete(listToDelete: ArrayList<LinkModel>) {
+        subBoardList
+    }
+
     private var subBoardList: ArrayList<SubBoard> = ArrayList()
     private var itemsCopy: ArrayList<SubBoard> = ArrayList()
     private var viewPool = RecyclerView.RecycledViewPool()
@@ -37,12 +42,24 @@ class SubBoardAdapter(
 
     override fun onBindViewHolder(holder: SubBoardViewHolder, position: Int) {
         val subBoard = subBoardList[position]
+        val button: Button = holder.itemView.findViewById(R.id.deleteLinksDone)
         holder.title.text = subBoard.title
         holder.recyclerView.apply {
             layoutManager = LinearLayoutManager(holder.recyclerView.context)
             adapter = LinkAdapter(onLinkButtonClickListener)
             (adapter as LinkAdapter).updateList(subBoard.linkModelList)
             setRecycledViewPool(viewPool)
+        }
+
+        button.setOnClickListener { view: View ->
+            if ((holder.recyclerView.adapter as LinkAdapter).isCheckboxVisible()) {
+                val list = (holder.recyclerView.adapter as LinkAdapter).getLinksToDelete()
+                (holder.recyclerView.adapter as LinkAdapter).deleteDone()
+                subBoard.linkModelList.removeAll(list)
+                view.visibility = View.GONE
+                onSubBoardItemClickListener.onLinkDeleted(subBoard)
+                notifyDataSetChanged()
+            }
         }
         holder.menuButton.setOnClickListener {
             val popupMenu = PopupMenu(it.context, it)
@@ -54,7 +71,12 @@ class SubBoardAdapter(
                         true
                     }
                     R.id.menuEditButton -> {
-                        //TODO make possible to edit subBoard title
+                        editSubBoard(subBoard, holder)
+                        true
+                    }
+                    R.id.menuDeleteLinksButton -> {
+                        (holder.recyclerView.adapter as LinkAdapter).prepareToDelete()
+                        button.visibility = View.VISIBLE
                         true
                     }
                     else -> {
@@ -84,9 +106,32 @@ class SubBoardAdapter(
                     } else {
                         Toast.makeText(
                             viewHolder.itemView.context,
-                            "Wrong address",
+                            WRONG_LINK_TYPE,
                             Toast.LENGTH_LONG
                         ).show()
+                    }
+                }
+            } else {
+                viewHolder.doneButton.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    private fun editSubBoard(subBoard: SubBoard, holder: SubBoardViewHolder) {
+        holder.apply {
+            subBoardTitleDescription.visibility = View.GONE
+            editSubBoardTitleView.visibility = View.VISIBLE
+            editSubBoardTitleEditText.setText(subBoard.title)
+            editSubBoardTitleEditText.addTextChangedListener {
+                if (editSubBoardTitleEditText.text.isEmpty()) {
+                    editSubBoardTitleDone.visibility = View.GONE
+                } else {
+                    editSubBoardTitleDone.visibility = View.VISIBLE
+                    editSubBoardTitleDone.setOnClickListener {
+                        editSubBoardTitleView.visibility = View.GONE
+                        subBoardTitleDescription.visibility = View.VISIBLE
+                        subBoard.title = editSubBoardTitleEditText.text.toString()
+                        onSubBoardItemClickListener.onEditClick(subBoard)
                     }
                 }
             }
@@ -101,6 +146,11 @@ class SubBoardAdapter(
         val doneButton: Button = itemView.findViewById(R.id.linkAddDoneButton)
         val addLinkLayout: LinearLayout = itemView.findViewById(R.id.addLinkLayout)
         val hintAboutSubBoard: TextView = itemView.findViewById(R.id.hintAboutSubBoard)
+        val editSubBoardTitleView: CardView = itemView.findViewById(R.id.editSubBoardTitle)
+        val editSubBoardTitleEditText: EditText = itemView.findViewById(R.id.editBoardTitle)
+        val editSubBoardTitleDone: Button = itemView.findViewById(R.id.editSubBoardTitleDoneButton)
+        val subBoardTitleDescription: LinearLayout =
+            itemView.findViewById(R.id.subBoardTitleDescription)
     }
 
     fun filter(text: String) {
@@ -132,4 +182,5 @@ interface OnSubBoardItemClickListener {
     fun onDeleteClick(subBoardId: Long)
     fun onEditClick(subBoard: SubBoard)
     fun onDoneClick(uri: String, subBoard: SubBoard)
+    fun onLinkDeleted(subBoard: SubBoard)
 }

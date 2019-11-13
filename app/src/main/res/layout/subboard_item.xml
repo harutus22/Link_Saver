@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/subBoardTitleDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -28,6 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:textColor="@color/subBoard_title"
                 android:textSize="18sp" />
@@ -42,12 +47,28 @@
 
         </LinearLayout>
 
+        <include layout="@layout/edit_sub_board_title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/editSubBoardTitle"
+            android:visibility="gone"
+            android:layout_marginTop="4dp"/>
+
         <LinearLayout
             android:id="@+id/addLinkLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone">
+
+            <TextView
+                android:text="@string/your_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:elevation="4dp"
+                android:textColor="@color/board_add"/>
 
             <EditText
                 android:id="@+id/addLinkToSubBoard"
@@ -59,7 +80,6 @@
                 android:background="@drawable/ic_link_item_rectangle"
                 android:elevation="4dp"
                 android:gravity="center"
-                android:hint="@string/your_link"
                 android:textSize="12sp"
                 android:visibility="visible" />
 
@@ -68,6 +88,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -84,6 +106,8 @@
                     android:id="@+id/hintAboutSubBoard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/subBoard_board_title"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -111,10 +135,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:padding="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"
             tools:listitem="@layout/link_item" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/deleteLinksDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_button"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

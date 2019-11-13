@@ -1,4 +1,4 @@
-package com.example.link_saver.fragments
+package com.example.link_saver.ui
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -23,35 +23,39 @@ import com.example.link_saver.R
 import com.example.link_saver.model.BoardModel
 import com.example.link_saver.model.LinkModel
 import com.example.link_saver.model.SubBoard
-import com.example.link_saver.recyclerview.OnLinkButtonClickListener
-import com.example.link_saver.recyclerview.OnSubBoardItemClickListener
-import com.example.link_saver.recyclerview.SubBoardAdapter
-import com.example.link_saver.utils.GET_PICTURE_RESULT
+import com.example.link_saver.adapters.OnLinkButtonClickListener
+import com.example.link_saver.adapters.OnSubBoardItemClickListener
+import com.example.link_saver.adapters.SubBoardAdapter
+import com.example.link_saver.utils.*
 import com.example.link_saver.viewmodel.BoardViewModel
 
 class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonClickListener {
+    override fun onLinkDeleted(subBoard: SubBoard) {
+        viewModel.updateSubBoard(subBoard)
+    }
+
     override fun onDeleteClick(subBoardId: Long) {
         viewModel.deleteSubBoard(subBoardId)
     }
 
     override fun onEditClick(subBoard: SubBoard) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewModel.updateSubBoard(subBoard)
     }
 
     override fun onDoneClick(uri: String, subBoard: SubBoard) {
-        subBoard.linkModelList.add(LinkModel(id = 0, subBoardId = subBoard.id, uri = uri))
+        subBoard.linkModelList.add(0, LinkModel(id = 0, subBoardId = subBoard.id, uri = uri))
         viewModel.updateSubBoard(subBoard)
     }
 
     override fun onButtonClicked(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.setPackage("com.android.chrome")
+        intent.setPackage(CHROME_PACKAGE)
         try {
             startActivity(intent)
         } catch (ex: ActivityNotFoundException){
             intent.setPackage(null)
-            startActivity(Intent.createChooser(intent, "Select Browser"));
+            startActivity(Intent.createChooser(intent, SELECT_BROWSER))
         }
     }
 
@@ -86,7 +90,6 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
             progressBar.visibility = View.GONE
             if (it.isEmpty()) {
                 addNewSubBoard.visibility = View.VISIBLE
-                addNewSubBoardHint.text = boardModel.title
             }
         })
     }
@@ -119,12 +122,14 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
     }
 
     private fun addSubCategory() {
+        addNewSubBoardHint.text = boardModel.title
         addNewSubBoardTitle.addTextChangedListener {
             if (addNewSubBoardTitle.text.isNotEmpty()) {
                 addNewSubBoardDone.visibility = View.VISIBLE
                 val title = addNewSubBoardTitle.text.toString()
                 addNewSubBoardDone.setOnClickListener {
                     viewModel.addSubBoard(SubBoard(boardId = boardModel.id, title = title))
+
                     addNewSubBoard.visibility = View.GONE
                     addNewSubBoardDone.visibility = View.GONE
                 }
