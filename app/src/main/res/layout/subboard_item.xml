@@ -47,6 +47,15 @@
 
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/selectAllButton"
+            android:background="@drawable/ic_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="23dp"
+            android:visibility="gone"/>
+
         <include layout="@layout/edit_sub_board_title"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -77,10 +86,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/ic_link_item_rectangle"
+                android:background="@drawable/rounded_edit_text"
                 android:elevation="4dp"
                 android:gravity="center"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:visibility="visible" />
 
             <LinearLayout
@@ -136,9 +145,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingEnd="12dp"
             android:paddingBottom="4dp"
             tools:listitem="@layout/link_item" />
 

@@ -15,4 +15,5 @@
     <color name="subBoard_board_title">#001579</color>
     <color name="subBoard_title">#1C3AA9</color>
     <color name="button_text_color">#FFFFFF</color>
+    <color name="edit_text_invisible_color">#00000000</color>
 </resources>

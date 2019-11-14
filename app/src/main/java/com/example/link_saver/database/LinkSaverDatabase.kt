@@ -8,8 +8,9 @@ import androidx.room.TypeConverters
 import com.example.link_saver.model.BoardModel
 import com.example.link_saver.model.SubBoard
 import com.example.link_saver.utils.DataConverter
+import com.example.link_saver.utils.LINK_SAVER_DATABASE
 
-@Database(entities = [SubBoard::class, BoardModel::class], version = 2)
+@Database(entities = [SubBoard::class, BoardModel::class], version = 3)
 @TypeConverters(DataConverter::class)
 abstract class LinkSaverDatabase: RoomDatabase() {
     abstract fun subBoardDao(): SubBoardDao
@@ -24,7 +25,9 @@ abstract class LinkSaverDatabase: RoomDatabase() {
         }
 
     private  fun buildDatabase(context: Context) = Room.databaseBuilder(context,
-        LinkSaverDatabase::class.java, "link_saver_database").fallbackToDestructiveMigration()
+        LinkSaverDatabase::class.java, LINK_SAVER_DATABASE).fallbackToDestructiveMigration()
         .build()
     }
+
+    //TODO add migration to database
 }

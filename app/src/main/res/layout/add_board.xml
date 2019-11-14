@@ -45,7 +45,7 @@
                 android:layout_marginBottom="16dp"
                 android:maxLength="20"
                 android:elevation="8dp"
-                android:background="@drawable/ic_add_edit_text_rectangle"/>
+                android:background="@drawable/rounded_edit_text"/>
 
         </LinearLayout>
 

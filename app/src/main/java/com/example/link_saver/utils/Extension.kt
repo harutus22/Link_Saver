@@ -2,8 +2,11 @@ package com.example.link_saver.utils
 
 import android.os.Build
 import android.view.View
+import android.widget.EditText
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.link_saver.R
+import java.text.FieldPosition
 
 fun View.setColor(colorId: Int) = run {
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
@@ -24,3 +27,8 @@ private fun getTextColor(inputColor: Int): Int{
 }
 
 fun String.checkUrl() = startsWith("https://")
+
+fun EditText.setCursor(position: Int = 0){
+    this.requestFocus()
+    this.setSelection(position)
+}

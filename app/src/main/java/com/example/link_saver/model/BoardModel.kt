@@ -11,7 +11,6 @@ data class BoardModel(
     var id: Long = 0,
     var title: String?,
     var imageUri: String? = "",
-    var subBoardList: ArrayList<SubBoard> = ArrayList(),
     var color: Int
 ) : Parcelable {
 
@@ -19,9 +18,6 @@ data class BoardModel(
         parcel.readLong(),
         parcel.readString(),
         parcel.readString(),
-        arrayListOf<SubBoard>().apply {
-            parcel.readList(this as List<*>, SubBoard::class.java.classLoader)
-        },
         parcel.readInt()
     )
 
@@ -29,7 +25,6 @@ data class BoardModel(
         dest.writeLong(id)
         dest.writeString(title)
         dest.writeString(imageUri)
-        dest.writeList(subBoardList as List<*>)
         dest.writeInt(color)
     }
 

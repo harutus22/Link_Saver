@@ -30,6 +30,7 @@ import com.example.link_saver.utils.*
 import com.example.link_saver.viewmodel.BoardViewModel
 
 class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonClickListener {
+
     override fun onLinkDeleted(subBoard: SubBoard) {
         viewModel.updateSubBoard(subBoard)
     }
@@ -43,7 +44,7 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
     }
 
     override fun onDoneClick(uri: String, subBoard: SubBoard) {
-        subBoard.linkModelList.add(0, LinkModel(id = 0, subBoardId = subBoard.id, uri = uri))
+        subBoard.linkModelList.add(0, LinkModel(subBoardId = subBoard.id, uri = uri))
         viewModel.updateSubBoard(subBoard)
     }
 
@@ -70,6 +71,8 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
     private lateinit var addNewSubBoardDone: Button
     private lateinit var subBoardRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var boardTitleEditText: EditText
+    private lateinit var boardTitleEditDone: Button
 
     private val subBoardAdapter: SubBoardAdapter = SubBoardAdapter(this, this)
     private val viewModel: BoardViewModel by lazy {
@@ -123,6 +126,7 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
 
     private fun addSubCategory() {
         addNewSubBoardHint.text = boardModel.title
+        addNewSubBoardTitle.setCursor()
         addNewSubBoardTitle.addTextChangedListener {
             if (addNewSubBoardTitle.text.isNotEmpty()) {
                 addNewSubBoardDone.visibility = View.VISIBLE
@@ -169,7 +173,7 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
                         true
                     }
                     R.id.menuEditButton -> {
-                        //TODO add edit functionality to change board model title
+                        editBoardTitleText()
                         true
                     }
                     else -> {
@@ -179,6 +183,9 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
                 }
             }
             popupMenu.show()
+        }
+        subBoardImage.setOnClickListener {
+            getGalleryPicture()
         }
     }
 
@@ -210,6 +217,34 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
         }
     }
 
+    private fun editBoardTitleText(){
+        subBoardTitle.visibility = View.GONE
+        boardTitleEditText.visibility = View.VISIBLE
+        boardTitleEditDone.visibility = View.VISIBLE
+        boardTitleEditText.setText(boardModel.title)
+        boardTitleEditText.setCursor(boardModel.title!!.length)
+        boardTitleEditText.addTextChangedListener {
+            if (boardTitleEditText.text.isEmpty()){
+                boardTitleEditDone.visibility = View.GONE
+            } else{
+                editTitleDone()
+            }
+        }
+        editTitleDone()
+    }
+
+    private fun editTitleDone(){
+        boardTitleEditDone.visibility = View.VISIBLE
+        boardTitleEditDone.setOnClickListener {
+            boardModel.title = boardTitleEditText.text.toString()
+            viewModel.updateBoard(boardModel)
+            subBoardTitle.text = boardModel.title
+            subBoardTitle.visibility = View.VISIBLE
+            boardTitleEditText.visibility = View.GONE
+            boardTitleEditDone.visibility = View.GONE
+        }
+    }
+
     private fun setViews(view: View) {
         searchView = view.findViewById(R.id.searchView)
         subBoardImage = view.findViewById(R.id.subBoardBoardImage)
@@ -221,5 +256,7 @@ class SubBoardFragment : Fragment(), OnSubBoardItemClickListener, OnLinkButtonCl
         addNewSubBoardDone = view.findViewById(R.id.addSubcategoryDoneButton)
         subBoardRecyclerView = view.findViewById(R.id.subBoardRecyclerView)
         progressBar = view.findViewById(R.id.progressBar)
+        boardTitleEditText = view.findViewById(R.id.subBoardBoardTitleEditText)
+        boardTitleEditDone = view.findViewById(R.id.subBoardBoardTitleEditDone)
     }
 }

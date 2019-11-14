@@ -8,21 +8,6 @@ import com.google.gson.reflect.TypeToken
 import java.io.Serializable
 
 class DataConverter : Serializable {
-    @TypeConverter
-    fun fromSubBoardList(subBoard: ArrayList<SubBoard>?): String? {
-        if (subBoard == null) return null
-        val gson = Gson()
-        val type = object : TypeToken<ArrayList<SubBoard>>() {}.type
-        return gson.toJson(subBoard, type)
-    }
-
-    @TypeConverter
-    fun toSubBoardList(value: String?): ArrayList<SubBoard>? {
-        if (value == null) return value
-        val gson = Gson()
-        val type = object : TypeToken<ArrayList<SubBoard>>() {}.type
-        return gson.fromJson(value, type)
-    }
 
     @TypeConverter
     fun fromLinkModelArrayList(board: ArrayList<LinkModel>?): String?{

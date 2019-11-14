@@ -55,5 +55,7 @@
         android:id="@+id/addNewBoardView"
         android:visibility="gone"
         android:layout_marginTop="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         />
 </LinearLayout>

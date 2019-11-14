@@ -139,11 +139,13 @@ class MainFragment : Fragment(), OnBoardItemMenuClickListener {
 
     private fun editButtonClicked(boardModel: BoardModel) {
         editTextBoardTitle.setText(boardModel.title)
+        editTextBoardTitle.setCursor(boardModel.title!!.length)
         showMainViews()
         addBoardDoneClick(boardModel, EDIT_DATA)
     }
 
     private fun addBoardDoneClick(boardModel: BoardModel? = null, command: String = ADD_DATA) {
+        editTextBoardTitle.setCursor()
         editTextBoardTitle.addTextChangedListener {
             if (editTextBoardTitle.text.isEmpty()) {
                 addBoardDone.visibility = View.GONE

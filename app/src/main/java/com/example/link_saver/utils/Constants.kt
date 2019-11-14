@@ -1,5 +1,7 @@
 package com.example.link_saver.utils
 
+const val LINK_SAVER_DATABASE = "link_saver_database"
+
 const val ADD_DATA = "Add"
 const val EDIT_DATA = "Edit"
 const val DELETE_DATA = "Delete"
