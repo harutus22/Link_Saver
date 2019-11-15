@@ -1,18 +1,14 @@
 package com.example.link_saver.adapters
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.link_saver.R
 import com.example.link_saver.model.LinkModel
 import com.example.link_saver.utils.checkUrl
 import com.example.link_saver.utils.setCursor
-import kotlin.math.log
 
 class LinkAdapter(private val onClickListener: OnLinkButtonClickListener,
                   private val onEditClickListener: OnEditClickListener):

@@ -57,6 +57,7 @@ class SubBoardAdapter(
         button.setOnClickListener { view: View ->
             if (linkAdapter.isCheckboxVisible()) {
                 val list = linkAdapter.getLinksToDelete()
+                holder.linksAllSelectButton.visibility = View.GONE
                 linkAdapter.deleteDone()
                 linkAdapter.hideSelectAllLinks()
                 subBoard.linkModelList.removeAll(list)

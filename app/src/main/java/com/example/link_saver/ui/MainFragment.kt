@@ -3,6 +3,7 @@ package com.example.link_saver.ui
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,8 +81,7 @@ class MainFragment : Fragment(), OnBoardItemMenuClickListener {
         progressBar = view.findViewById(R.id.progressBar)
         recyclerView = view.findViewById(R.id.recyclerView)
         lonelyAddButton = view.findViewById(R.id.lonelyAddButton)
-        val layoutManager = GridLayoutManager(this.context, 2)
-        recyclerView.layoutManager = layoutManager
+        recyclerView.layoutManager = GridLayoutManager(this.context, 2)
         recyclerView.adapter = boardListAdapter
     }
 
@@ -89,6 +89,7 @@ class MainFragment : Fragment(), OnBoardItemMenuClickListener {
         super.onStart()
         simpleOrRecyclerView()
         searchItem()
+        recyclerView.addItemDecoration(BoardItemDecoration( resources.getDimension(R.dimen.margin_size_add_item).toInt()))
     }
 
     private fun searchItem() {

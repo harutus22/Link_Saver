@@ -4,6 +4,8 @@ import android.os.Build
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.marginLeft
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.link_saver.R
