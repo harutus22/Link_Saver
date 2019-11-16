@@ -14,19 +14,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="8dp"
+            android:elevation="@dimen/medium_elevation"
             android:gravity="center_horizontal"
             android:background="@drawable/ic_rectangle_add"
             android:orientation="vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+            android:layout_marginStart="@dimen/medium_margin_start"
+            android:layout_marginEnd="@dimen/medium_margin_end">
 
             <TextView
                 android:id="@+id/boardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/title"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/medium_margin_top"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,11 +40,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/boardTitle"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="@dimen/medium_margin_start"
+                android:layout_marginEnd="@dimen/medium_margin_end"
+                android:layout_marginBottom="@dimen/medium_margin_bottom"
                 android:maxLength="20"
-                android:elevation="8dp"
+                android:elevation="@dimen/medium_elevation"
                 android:background="@drawable/rounded_edit_text"/>
 
         </LinearLayout>

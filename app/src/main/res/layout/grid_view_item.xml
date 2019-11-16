@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:elevation="9dp"
     android:layout_marginTop="16dp"
+    android:background="@drawable/ic_rectangle_background"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,10 +18,10 @@
             android:id="@+id/boardImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="54dp"
-            android:layout_marginStart="54dp"
             android:background="@drawable/circle_shape"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginEnd="54dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,9 +32,7 @@
             android:id="@+id/boardTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:textSize="14sp"

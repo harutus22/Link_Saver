@@ -25,23 +25,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:elevation="8dp">
+            android:layout_marginStart="@dimen/medium_margin_start"
+            android:layout_marginEnd="@dimen/medium_margin_end"
+            android:layout_marginTop="@dimen/medium_margin_top"
+            android:elevation="@dimen/medium_elevation">
 
             <ImageView
                 android:id="@+id/subBoardBoardImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/circle_shape"
                 android:elevation="4dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginStart="@dimen/medium_margin_start"
+                android:layout_marginTop="@dimen/medium_margin_top"
+                android:layout_marginBottom="@dimen/medium_margin_bottom"/>
 
             <TextView
                 android:id="@+id/subBoardBoardTitle"
@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/medium_margin_end"
                 android:src="@drawable/ic_menu_dots"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -103,10 +103,10 @@
             android:id="@+id/addSubBoard"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/medium_margin_top"
+            android:layout_marginBottom="@dimen/medium_margin_bottom"
+            android:layout_marginStart="@dimen/medium_margin_start"
+            android:layout_marginEnd="@dimen/medium_margin_end"
             android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -114,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/medium_margin_start"
             tools:listitem="@layout/subboard_item"/>
 
     </LinearLayout>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="margin_size_add_item">16dp</dimen>
+    <dimen name="medium_margin_start">16dp</dimen>
+    <dimen name="medium_margin_end">16dp</dimen>
+    <dimen name="medium_margin_top">16dp</dimen>
+    <dimen name="medium_margin_bottom">16dp</dimen>
+
+    <dimen name="medium_elevation">8dp</dimen>
 
 </resources>

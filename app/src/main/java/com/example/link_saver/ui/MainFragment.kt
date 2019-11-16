@@ -83,14 +83,17 @@ class MainFragment : Fragment(), OnBoardItemMenuClickListener {
         lonelyAddButton = view.findViewById(R.id.lonelyAddButton)
         recyclerView.layoutManager = GridLayoutManager(this.context, 2)
         recyclerView.adapter = boardListAdapter
+        recyclerView.addItemDecoration(BoardItemDecoration(resources.getDimensionPixelSize(R.dimen.medium_margin_bottom)))
+
     }
 
     override fun onStart() {
         super.onStart()
         simpleOrRecyclerView()
         searchItem()
-        recyclerView.addItemDecoration(BoardItemDecoration( resources.getDimension(R.dimen.margin_size_add_item).toInt()))
     }
+
+    //TODO add layout for different screen sizes
 
     private fun searchItem() {
         mainSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

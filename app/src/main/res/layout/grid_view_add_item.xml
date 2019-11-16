@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:elevation="9dp"
-    android:layout_marginTop="16dp"
-    app:cardCornerRadius="8dp">
+    android:elevation="@dimen/medium_elevation"
+    android:layout_marginTop="@dimen/medium_margin_top"
+    app:cardCornerRadius="8dp"
+    android:id="@+id/addLayout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
             android:id="@+id/boardImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,10 +32,10 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="49dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="49dp"
+            android:layout_marginTop="6dp"
             android:layout_marginBottom="25dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
