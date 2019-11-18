@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    >
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <include layout="@layout/search_view"
+            android:id="@+id/mainSearchView"
+            android:visibility="visible"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:spanCount="2"
+            android:layout_marginStart="@dimen/medium_margin_start"
+            android:layout_marginEnd="@dimen/medium_margin_end"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@layout/grid_view_item"
+            android:visibility="visible"
+            />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <include layout="@layout/grid_view_add_item"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/lonelyAddButton"
+        android:layout_marginTop="84dp"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"/>
+
+    <include
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/add_board"
+        android:id="@+id/addNewBoardView"
+        android:visibility="gone"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="@dimen/medium_margin_start"
+        android:layout_marginEnd="@dimen/medium_margin_end"
+        />
+</LinearLayout>
